@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI SyncMaster</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">AI SyncMaster</h1>
+
+    <!-- 输入区域 -->
+    <div class="input-section">
+      <textarea
+        id="queryInput"
+        placeholder="输入你的问题..."
+        rows="4"
+      ></textarea>
+    </div>
+
+    <!-- 平台选择区域 -->
+    <div class="platform-section">
+      <div class="platform-header">选择目标平台</div>
+      <div class="platform-grid" id="platformGrid">
+        <!-- 动态生成 -->
+      </div>
+    </div>
+
+    <!-- 发送按钮 -->
+    <button class="send-btn" id="sendBtn">
+      <span class="btn-text">立即出发</span>
+    </button>
+  </div>
+
+  <script src="platforms.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
