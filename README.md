@@ -2,6 +2,8 @@
 
 Chrome 扩展 - 多平台 AI 同步查询工具
 
+![UI Preview](https://minimax-algeng-chat-tts.oss-cn-wulanchabu.aliyuncs.com/ccv2%2F2026-01-18%2FMiniMax-M2.1%2F1911985680834109694%2F64a35c7078a26b01591b69d66199a439065aa725966eb54b789fbd23a4f3b4f7..png)
+
 ---
 
 ## 文件结构
