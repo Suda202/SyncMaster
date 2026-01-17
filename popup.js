@@ -120,18 +120,139 @@ function buildUrl(platformId, query) {
 }
 
 /**
+ * 获取屏幕尺寸
+ */
+function getScreenInfo() {
+  return {
+    width: window.screen.width,
+    height: window.screen.height,
+    availLeft: window.screen.availLeft || 0,
+    availTop: window.screen.availTop || 0,
+  };
+}
+
+/**
+ * 处理发送 - 单屏模式 (N=1)
+ */
+async function handleSingleMode(platformId, query) {
+  const url = buildUrl(platformId, query);
+  await chrome.tabs.create({ url });
+}
+
+/**
+ * 处理发送 - 分屏模式 (N=2,3)
+ * 每个平台一个独立窗口
+ */
+async function handleSplitMode(platformIds, query, count) {
+  const screen = getScreenInfo();
+  const winWidth = Math.floor(screen.width / count);
+  const urls = platformIds.map(id => buildUrl(id, query));
+
+  // 为每个平台创建独立窗口
+  for (let i = 0; i < urls.length; i++) {
+    const left = screen.availLeft + Math.floor(i * winWidth);
+    const focused = i === 0; // 第一个窗口聚焦
+    const win = await chrome.windows.create({
+      url: urls[i],
+      left: left,
+      top: screen.availTop,
+      width: winWidth,
+      height: screen.height,
+      focused: focused,
+      type: 'normal',
+    });
+
+    // 强制设置窗口位置
+    if (win && win.id) {
+      await chrome.windows.update(win.id, {
+        left: left,
+        top: screen.availTop,
+        width: winWidth,
+        height: screen.height,
+        state: 'normal'
+      });
+    }
+
+    await new Promise(r => setTimeout(r, 100));
+  }
+}
+
+/**
+ * 处理发送 - 扩展模式 (N>3)
+ * 固定 3 个窗口，每个窗口用 Tab 承载多个目标
+ */
+async function handleExtendedMode(platformIds, query) {
+  const screen = getScreenInfo();
+  const windowCount = 3;
+  const winWidth = Math.floor(screen.width / windowCount);
+
+  // 按顺序分配到 3 个窗口
+  const windowGroups = [[], [], []];
+  platformIds.forEach((id, index) => {
+    windowGroups[index % windowCount].push(buildUrl(id, query));
+  });
+
+  // 创建 3 个窗口
+  for (let i = 0; i < windowCount; i++) {
+    const urls = windowGroups[i];
+    if (urls.length === 0) continue;
+
+    const left = screen.availLeft + Math.floor(i * winWidth);
+
+    const win = await chrome.windows.create({
+      url: urls[0],
+      left: left,
+      top: screen.availTop,
+      width: winWidth,
+      height: screen.height,
+      focused: i === 0,
+      type: 'normal',
+    });
+
+    // 强制设置窗口位置
+    if (win && win.id) {
+      await chrome.windows.update(win.id, {
+        left: left,
+        top: screen.availTop,
+        width: winWidth,
+        height: screen.height,
+        state: 'normal'
+      });
+
+      // 在窗口中打开其他 URL（作为 Tab）
+      for (let j = 1; j < urls.length; j++) {
+        await chrome.tabs.create({ windowId: win.id, url: urls[j], active: false });
+      }
+    }
+
+    await new Promise(r => setTimeout(r, 100));
+  }
+}
+
+/**
  * 处理发送
  */
-function handleSend() {
-  const validPlatforms = Array.from(state.selectedPlatforms);
-  if (validPlatforms.length === 0) return;
+async function handleSend() {
+  const platformIds = Array.from(state.selectedPlatforms);
+  if (platformIds.length === 0) return;
 
   const query = state.query.trim();
   if (!query) return;
 
-  // 打开所有平台的标签页
-  const urls = validPlatforms.map(id => buildUrl(id, query));
-  urls.forEach(url => chrome.tabs.create({ url }));
+  const count = platformIds.length;
+
+  try {
+    if (count === 1) {
+      await handleSingleMode(platformIds[0], query);
+    } else if (count === 2 || count === 3) {
+      await handleSplitMode(platformIds, query, count);
+    } else {
+      await handleExtendedMode(platformIds, query);
+    }
+  } catch (err) {
+    console.error('[SyncMaster] 发送失败:', err);
+    alert('打开窗口失败，请确保允许插件管理弹出窗口');
+  }
 }
 
 /**

@@ -3,7 +3,7 @@
   "name": "AI SyncMaster",
   "version": "0.1.0",
   "description": "多模型 AI 同步查询与分屏对比工具",
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage", "tabs", "windows"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
