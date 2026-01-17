@@ -26,6 +26,9 @@ function init() {
   // 渲染平台列表
   renderPlatforms();
 
+  // 插入 header 行结构
+  insertHeaderRow();
+
   // 绑定事件
   bindEvents();
 
@@ -50,6 +53,26 @@ function renderPlatforms() {
     `;
     grid.appendChild(item);
   });
+}
+
+/**
+ * 插入 header 行结构
+ */
+function insertHeaderRow() {
+  const section = document.querySelector('.platform-section');
+  const header = section.querySelector('.platform-header');
+  const count = elements.selectedCount;
+
+  // 创建 header 行容器
+  const headerRow = document.createElement('div');
+  headerRow.className = 'platform-header-row';
+
+  // 移动 header 和计数器到行内
+  headerRow.appendChild(header);
+  headerRow.appendChild(count);
+
+  // 插入到 grid 前面
+  section.insertBefore(headerRow, elements.platformGrid);
 }
 
 /**
