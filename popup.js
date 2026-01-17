@@ -20,6 +20,7 @@ function init() {
     queryInput: document.getElementById('queryInput'),
     platformGrid: document.getElementById('platformGrid'),
     sendBtn: document.getElementById('sendBtn'),
+    selectedCount: document.getElementById('selectedCount'),
   };
 
   // 渲染平台列表
@@ -96,6 +97,9 @@ function updateUI() {
 
   // 更新按钮状态
   elements.sendBtn.disabled = !hasInput || selectedCount === 0;
+
+  // 更新选中计数
+  elements.selectedCount.textContent = selectedCount;
 }
 
 /**

@@ -1,3 +1,7 @@
+/* Neo-Brutalism Design - Blue Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,39 +9,53 @@
 }
 
 body {
-  width: 380px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #1a1a2e;
-  color: #eee;
+  width: 420px;
+  min-height: 540px;
+  font-family: 'Space Mono', monospace;
+  background: #FFE4E1;
+  color: #000;
+  overflow: hidden;
 }
 
 .container {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+/* 标题 */
 .title {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   text-align: center;
-  margin-bottom: 16px;
+  padding: 12px;
+  background: #3B82F6;
   color: #fff;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0px 0px #000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* 输入区域 */
 .input-section {
-  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 #queryInput {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #333;
-  border-radius: 8px;
-  background: #252542;
-  color: #fff;
+  padding: 14px;
+  border: 4px solid #000;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
   font-size: 14px;
-  resize: vertical;
-  min-height: 80px;
+  font-family: 'Space Mono', monospace;
+  resize: none;
+  height: 80px;
+  box-shadow: 4px 4px 0px 0px #000;
+  transition: none;
 }
 
 #queryInput::placeholder {
@@ -46,169 +64,145 @@ body {
 
 #queryInput:focus {
   outline: none;
-  border-color: #5865f2;
-}
-
-/* 文件上传区域 */
-.upload-section {
-  margin-bottom: 12px;
-}
-
-.upload-area {
-  border: 2px dashed #444;
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.upload-area:hover {
-  border-color: #5865f2;
-  background: rgba(88, 101, 242, 0.1);
-}
-
-.upload-area.dragover {
-  border-color: #5865f2;
-  background: rgba(88, 101, 242, 0.2);
-}
-
-.upload-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #888;
-  font-size: 13px;
-}
-
-.upload-icon {
-  font-size: 18px;
-}
-
-.file-list {
-  margin-top: 8px;
-}
-
-.file-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: #252542;
-  border-radius: 6px;
-  margin-bottom: 4px;
-  font-size: 12px;
-}
-
-.file-item .file-name {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.file-item .file-remove {
-  cursor: pointer;
-  color: #f44;
-  margin-left: 8px;
+  background: #BFDBFE;
 }
 
 /* 平台选择区域 */
 .platform-section {
-  margin-bottom: 12px;
+  flex: 1;
+  min-height: 0;
 }
 
 .platform-header {
-  font-size: 13px;
-  color: #888;
+  font-size: 12px;
+  font-weight: 700;
   margin-bottom: 8px;
+  padding: 6px 10px;
+  background: #FCD34D;
+  border: 3px solid #000;
+  display: inline-block;
+  box-shadow: 3px 3px 0px 0px #000;
 }
 
 .platform-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  padding: 4px;
 }
 
 .platform-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 8px;
-  background: #252542;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  padding: 10px 6px;
+  background: #fff;
+  border: 3px solid #000;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: none;
+  box-shadow: 3px 3px 0px 0px #000;
 }
 
 .platform-item:hover {
-  background: #2d2d4a;
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px 0px #000;
 }
 
 .platform-item.selected {
-  border-color: #5865f2;
-  background: rgba(88, 101, 242, 0.2);
+  background: #60A5FA;
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000;
 }
 
-.platform-item.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.platform-item:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
 }
 
 .platform-item .platform-icon {
-  font-size: 24px;
+  width: 28px;
+  height: 28px;
   margin-bottom: 4px;
 }
 
+.platform-item .platform-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 .platform-item .platform-name {
-  font-size: 11px;
-  color: #aaa;
-}
-
-.platform-item .platform-warning {
   font-size: 10px;
-  color: #f90;
-  margin-top: 2px;
-}
-
-/* 提示信息 */
-.hint {
-  font-size: 12px;
-  color: #f90;
-  margin-bottom: 8px;
-  min-height: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 /* 发送按钮 */
 .send-btn {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #5865f2, #7289da);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+  padding: 14px;
+  background: #10B981;
+  border: 4px solid #000;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 4px 4px 0px 0px #000;
+  transition: none;
 }
 
 .send-btn:hover {
-  background: linear-gradient(135deg, #4752c4, #5b6eae);
+  background: #34D399;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000;
+}
+
+.send-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
 }
 
 .send-btn:disabled {
-  opacity: 0.5;
+  background: #9CA3AF;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0px 0px #000;
 }
 
-.btn-mode {
+/* 装饰 - 左上角 */
+.corner-decor-tl {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 16px solid #FCD34D;
+}
+
+/* 装饰 - 右下角 */
+.corner-decor-br {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: #3B82F6;
+  border: 3px solid #000;
+}
+
+/* 选中计数器 */
+.selected-count {
+  position: fixed;
+  top: 8px;
+  right: 60px;
+  background: #FCD34D;
+  border: 3px solid #000;
+  padding: 4px 8px;
   font-size: 12px;
-  opacity: 0.8;
+  font-weight: 700;
+  box-shadow: 2px 2px 0px 0px #000;
 }

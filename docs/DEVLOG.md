@@ -2,6 +2,35 @@
 
 ---
 
+## 2025-01-18 | v0.2.0 - UI 改版 + 快捷键
+
+### 开发目标
+优化 UI 体验，新增快捷键支持
+
+### 变更内容
+1. [x] UI 全面改版为 Neo-Brutalist 风格
+2. [x] 新增快捷键 Ctrl+Shift+S 打开 popup
+3. [x] 平台图标改为自定义 SVG（Neo-Brutalist 风格）
+4. [x] 新增扩展图标（Neo-Brutalist 风格）
+
+### 设计风格 (Neo-Brutalism)
+- 粗黑边框 (3-4px)
+- 硬阴影 (无模糊)
+- 高对比度配色
+- 等宽字体 (Space Mono)
+- 几何 SVG 图标
+
+### 快捷键
+- Windows/Linux: `Ctrl+Shift+S`
+- macOS: `Command+Shift+S`
+
+### 文件变更
+- popup.css - 全新 Neo-Brutalist 样式
+- platforms.js - SVG 图标替换 emoji
+- manifest.json - 新增 commands 配置
+
+---
+
 ## 2025-11-06 | 模块一：多平台同步发送
 
 ### 开发目标
@@ -25,11 +54,6 @@
 ### 开发目标
 实现文件上传到各 AI 平台（图片/文档）
 
-### 开发计划
-1. [x] 研究各平台文件上传 DOM 结构
-2. [x] 实现文件上传功能
-3. [ ] 自测
-
 ### 研究发现
 
 **各平台文件输入选择器：**
@@ -38,45 +62,17 @@
 - **Grok**: `input[type="file"].hidden[multiple]` - 隐藏的多文件 input
 - **Claude/Perplexity**: `input[type="file"]` - 标准 file input
 
-**技术要点：**
-- 可使用 DataTransfer API 程序化设置文件
-- 需要 chrome.storage.local 在 popup 和 content script 间传递文件数据
-- 各平台 file input 都是隐藏的，需要通过 JavaScript 触发
-
 ### 实现方案
-1. **background.js**: 新增 Service Worker，处理 popup 与 content script 间的消息传递
-2. **popup.js**: 将文件转为 base64，通过 background 发送给对应 tab
-3. **content.js**: 接收文件数据，转回 File 对象，使用 DataTransfer API 注入到 file input
-
-### 更新记录
-
-#### v0.1.0 - 基础框架搭建
-- **状态**: 待测试
-- **更新内容**:
-  - 创建 manifest.json（Manifest V3）
-  - 创建 popup.html/css/js 基础 UI
-  - 实现 6 个平台配置（ChatGPT、Claude、Gemini、Google、Perplexity、Grok）
-  - 实现文件上传（拖拽+点击）
-  - 实现平台能力检测（根据文件类型自动禁用不支持的平台）
-  - 实现多 tab 打开功能
-  - 实现平台选择记忆（chrome.storage）
-- **文件列表**:
-  - manifest.json - 扩展配置
-  - popup.html - 弹窗 HTML
-  - popup.css - 样式
-  - popup.js - 主逻辑
-  - platforms.js - 平台配置
-  - icons/*.png - 图标
-- **遇到的问题**:
-  - （待自测后填写）
-- **下一步**:
-  - 在 Chrome 中加载扩展进行测试
-  - 验证各平台 URL 是否正确打开
-  - 验证文件类型检测是否生效
+1. **background.js**: Service Worker，处理消息传递
+2. **popup.js**: 文件转 base64 发送
+3. **content.js**: 接收并注入文件
 
 ---
 
-## 待开发模块
+## 版本历史
 
-- [ ] 模块二：智能分屏
-- [ ] 模块三：新标签页替换
+| 版本 | 日期 | 主要变更 |
+|------|------|----------|
+| v0.2.0 | 2025-01-18 | Neo-Brutalist UI + 快捷键 |
+| v0.1.0 | 2025-01-17 | 文件上传功能 |
+| - | 2025-11-06 | 基础框架搭建 |

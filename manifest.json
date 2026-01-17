@@ -1,9 +1,17 @@
 {
   "manifest_version": 3,
   "name": "AI SyncMaster",
-  "version": "0.1.0",
-  "description": "多模型 AI 同步查询与分屏对比工具",
-  "permissions": ["storage", "tabs", "windows"],
+  "version": "0.2.0",
+  "description": "AI 同步查询工具 - 按 Ctrl+Shift+S 打开",
+  "permissions": ["storage"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      }
+    }
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
