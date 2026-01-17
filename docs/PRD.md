@@ -157,21 +157,22 @@
 
 ```
 SyncMaster/
-├── manifest.json        # 扩展配置
-├── popup.html          # 弹窗页面
-├── popup.css           # Neo-Brutalist 样式
-├── popup.js            # 主逻辑
-├── platforms.js        # 平台配置
-├── content.js          # 内容脚本（自动填单）
-├── icons/              # 图标文件
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-└── docs/               # 文档
-    ├── PRD.md          # 产品需求文档
-    ├── ARCHITECTURE.md # 架构文档
-    └── DEVLOG.md       # 开发日志
+├── core/                  # 核心文件
+│   ├── manifest.json      # 扩展配置
+│   ├── popup.html         # 弹窗页面
+│   ├── popup.css          # 样式
+│   ├── popup.js           # 主逻辑
+│   ├── platforms.js       # 平台配置
+│   ├── content.js         # 自动填单脚本
+│   └── icons/             # 图标文件
+├── docs/                  # 开发文档
+│   ├── PRD.md             # 产品需求文档
+│   ├── ARCHITECTURE.md    # 架构文档
+│   └── DEVLOG.md          # 开发日志
+└── README.md              # 项目说明
 ```
+
+**加载插件**：直接选择 `core` 文件夹
 
 ---
 
