@@ -1,6 +1,7 @@
 # AI SyncMaster
 
 Chrome 扩展 - 多平台 AI 同步查询工具
+
 <img width="420" height="575" alt="image" src="https://github.com/user-attachments/assets/d7377832-376f-4058-bc3f-a44e11a925b1" />
 
 ---
