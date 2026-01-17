@@ -73,31 +73,10 @@
 
 ---
 
-## 2025-01-17 | 模块一扩展：文件上传功能
-
-### 开发目标
-实现文件上传到各 AI 平台（图片/文档）
-
-### 研究发现
-
-**各平台文件输入选择器：**
-- **ChatGPT**: `input[type="file"]:not(#upload-camera)` - 有多个 file input
-- **Gemini**: `input[type="file"][name="Filedata"]` - 支持多文件，无类型限制
-- **Grok**: `input[type="file"].hidden[multiple]` - 隐藏的多文件 input
-- **Claude/Perplexity**: `input[type="file"]` - 标准 file input
-
-### 实现方案
-1. **background.js**: Service Worker，处理消息传递
-2. **popup.js**: 文件转 base64 发送
-3. **content.js**: 接收并注入文件
-
----
-
 ## 版本历史
 
 | 版本 | 日期 | 主要变更 |
 |------|------|----------|
 | v0.2.1 | 2025-01-18 | Coral + Indigo 配色，计数器移到 header，按钮改 GO |
 | v0.2.0 | 2025-01-18 | Neo-Brutalist UI + 快捷键 |
-| v0.1.0 | 2025-01-17 | 文件上传功能 |
 | - | 2025-11-06 | 基础框架搭建 |

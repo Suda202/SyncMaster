@@ -38,14 +38,16 @@ SyncMaster/
 
 ## 支持平台
 
-| 平台 | 文本 | 图片 | 文件 |
-|------|------|------|------|
-| ChatGPT | ✅ | ✅ | ✅ |
-| Claude | ✅ | ✅ | ✅ |
-| Gemini | ✅ | ✅ | ✅ |
-| Google | ✅ | - | - |
-| Perplexity | ✅ | ✅ | - |
-| Grok | ✅ | ✅ | - |
+| 平台 | 支持 |
+|------|------|
+| ChatGPT | ✅ |
+| Claude | ✅ |
+| Gemini | ✅ |
+| Google | ✅ |
+| Perplexity | ✅ |
+| Grok | ✅ |
+
+所有平台支持文本输入。
 
 ## 安装方式
 
