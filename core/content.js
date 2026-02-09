@@ -1,21 +1,10 @@
 /**
  * Content Script - 自动填入查询内容并发送
  * 注入到各 AI 平台页面
+ * 通过 chrome.storage.local 获取待发送的查询内容（避免 URL 过长导致 HTTP 414）
  */
 
 (function() {
-  // 从 URL 获取查询参数
-  const urlParams = new URLSearchParams(window.location.search);
-  const query = urlParams.get('syncmaster_query');
-
-  // 清理 URL 中的参数
-  if (query) {
-    let cleanUrl = window.location.href;
-    cleanUrl = cleanUrl.replace(/[?&]syncmaster_query=[^&]+/, '');
-    cleanUrl = cleanUrl.replace(/\?$/, '');
-    window.history.replaceState({}, document.title, cleanUrl);
-  }
-
   const host = window.location.hostname;
 
   /**
@@ -82,7 +71,7 @@
   /**
    * 填入并发送
    */
-  function fillAndSend() {
+  function fillAndSend(query) {
     let editor = null;
 
     // ChatGPT
@@ -152,29 +141,46 @@
     return false;
   }
 
-  // 尝试多次填入并发送
-  let attempts = 0;
-  const maxAttempts = 30;
+  /**
+   * 从 chrome.storage 读取查询内容，然后尝试填入并发送
+   * 使用时间戳判断是否为最近的查询（30 秒内有效）
+   */
+  function startWithQuery() {
+    chrome.storage.local.get(['syncmaster_pending_query', 'syncmaster_query_time'], (result) => {
+      const query = result.syncmaster_pending_query;
+      const queryTime = result.syncmaster_query_time;
 
-  const tryFillAndSend = () => {
-    attempts++;
-    if (fillAndSend()) {
-      console.log('[SyncMaster] 内容已填入并发送');
-      return;
-    }
-    if (attempts < maxAttempts) {
-      setTimeout(tryFillAndSend, 500);
-    } else {
-      console.log('[SyncMaster] 未能找到输入框');
-    }
-  };
+      // 检查是否有待发送的查询，且在 30 秒内
+      if (!query || !queryTime || (Date.now() - queryTime > 30000)) {
+        return;
+      }
+
+      console.log('[SyncMaster] 检测到待发送查询，开始填入');
+
+      let attempts = 0;
+      const maxAttempts = 30;
+
+      const tryFillAndSend = () => {
+        attempts++;
+        if (fillAndSend(query)) {
+          console.log('[SyncMaster] 内容已填入并发送');
+          return;
+        }
+        if (attempts < maxAttempts) {
+          setTimeout(tryFillAndSend, 500);
+        } else {
+          console.log('[SyncMaster] 未能找到输入框');
+        }
+      };
+
+      setTimeout(tryFillAndSend, 1000);
+    });
+  }
 
   // 页面加载后开始尝试
   if (document.readyState === 'complete') {
-    if (query) setTimeout(tryFillAndSend, 1000);
+    startWithQuery();
   } else {
-    window.addEventListener('load', () => {
-      if (query) setTimeout(tryFillAndSend, 1000);
-    });
+    window.addEventListener('load', startWithQuery);
   }
 })();

@@ -127,20 +127,15 @@ function updateUI() {
 
 /**
  * 构建 URL
+ * AI 平台通过 chrome.storage 传递查询内容（避免 HTTP 414 错误）
  */
 function buildUrl(platformId, query) {
   const platform = AI_PLATFORMS[platformId];
   let url = platform.url;
 
-  // 如果平台支持原生查询参数
+  // 仅对支持原生查询参数的平台（如 Google、Perplexity）使用 URL 参数
   if (platform.queryParam && query) {
     url = `${platform.url}?${platform.queryParam}=${encodeURIComponent(query)}`;
-  }
-
-  // 对于 AI 平台，添加自定义参数供 content script 使用
-  if (!platform.queryParam && query) {
-    const separator = url.includes('?') ? '&' : '?';
-    url = `${url}${separator}syncmaster_query=${encodeURIComponent(query)}`;
   }
 
   return url;
@@ -265,6 +260,12 @@ async function handleSend() {
 
   const query = state.query.trim();
   if (!query) return;
+
+  // 将查询内容和时间戳存储到 storage，供 content script 读取
+  await chrome.storage.local.set({
+    syncmaster_pending_query: query,
+    syncmaster_query_time: Date.now(),
+  });
 
   const count = platformIds.length;
 
