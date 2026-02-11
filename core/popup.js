@@ -103,6 +103,16 @@ function bindEvents() {
 
   // 发送按钮
   elements.sendBtn.addEventListener('click', handleSend);
+
+  // Enter 键发送（Shift+Enter 换行）
+  elements.queryInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!elements.sendBtn.disabled) {
+        handleSend();
+      }
+    }
+  });
 }
 
 /**
@@ -277,6 +287,10 @@ async function handleSend() {
     } else {
       await handleExtendedMode(platformIds, query);
     }
+    // 发送成功后清空输入框
+    state.query = '';
+    elements.queryInput.value = '';
+    updateUI();
   } catch (err) {
     console.error('[SyncMaster] 发送失败:', err);
     alert('打开窗口失败，请确保允许插件管理弹出窗口');
