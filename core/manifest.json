@@ -3,7 +3,10 @@
   "name": "AI SyncMaster",
   "version": "0.2.0",
   "description": "AI 同步查询工具 - 按 Ctrl+Shift+S 打开",
-  "permissions": ["storage"],
+  "permissions": ["storage", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "commands": {
     "_execute_action": {
       "suggested_key": {

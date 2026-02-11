@@ -164,6 +164,16 @@ function getScreenInfo() {
 }
 
 /**
+ * 记录插件创建的窗口 ID，供 background 脚本追踪
+ */
+async function trackWindowId(windowId) {
+  const { syncmaster_window_ids: ids = [] } =
+    await chrome.storage.local.get('syncmaster_window_ids');
+  ids.push(windowId);
+  await chrome.storage.local.set({ syncmaster_window_ids: ids });
+}
+
+/**
  * 处理发送 - 单屏模式 (N=1)
  */
 async function handleSingleMode(platformId, query) {
@@ -196,6 +206,7 @@ async function handleSplitMode(platformIds, query, count) {
 
     // 强制设置窗口位置
     if (win && win.id) {
+      await trackWindowId(win.id);
       await chrome.windows.update(win.id, {
         left: left,
         top: screen.availTop,
@@ -243,6 +254,7 @@ async function handleExtendedMode(platformIds, query) {
 
     // 强制设置窗口位置
     if (win && win.id) {
+      await trackWindowId(win.id);
       await chrome.windows.update(win.id, {
         left: left,
         top: screen.availTop,
